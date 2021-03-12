@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Trabalho_Commov</string>
+    <string name="Description">Description</string>
+    <string name="Title">Title</string>
 </resources>
