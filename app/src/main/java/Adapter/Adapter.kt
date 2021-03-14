@@ -18,6 +18,8 @@ class Adapter(private val Lista: List<Nota>) :
         return ViewHolder(itemView)
     }
 
+    //teste
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = Lista[position]
         holder.textView1.text = currentItem.text1
