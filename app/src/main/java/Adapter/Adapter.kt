@@ -18,7 +18,7 @@ class Adapter(private val Lista: List<Nota>) :
         return ViewHolder(itemView)
     }
 
-    //teste n
+    //teste
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = Lista[position]
