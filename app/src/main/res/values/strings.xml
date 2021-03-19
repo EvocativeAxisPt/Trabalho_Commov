@@ -4,4 +4,15 @@
     <string name="Title">Title</string>
     <string name="Insert_Item">Insert Item</string>
     <string name="Remove_Item">Remove Item</string>
+    <string name="add_city">Adicionar</string>
+    <string name="insertcity">Insert City</string>
+    <string name="insertcountry">Insert Country</string>
+    <string name="empty_not_saved">NOT SAVED</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="mynotes">My Notes</string>
+    <string name="All_Notes">All Notes</string>
+    <string name="inserttitulo">Titulo</string>
+    <string name="insertDescrição">Description</string>
 </resources>
