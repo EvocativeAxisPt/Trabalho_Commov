@@ -7,27 +7,19 @@ import com.example.trabalho_commov.entities.Nota
 @Dao
 interface NotasDao {
 
-    @Query("SELECT * from city_table ORDER BY city ASC")
+    @Query("SELECT * from nota_table ORDER BY titulo ASC")
     fun getAllCities(): LiveData<List<Nota>>
-
-    @Query("SELECT * FROM city_table WHERE country == :country")
-    fun getCitiesByCountry(country: String): LiveData<List<Nota>>
-
-    @Query("SELECT * FROM city_table WHERE city == :city")
-    fun getCountryFromCity(city: String): LiveData<Nota>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(nota: Nota)
 
     @Update
-    suspend fun updateCity(nota: Nota)
+    suspend fun updateNota(nota: Nota)
 
-    @Query("DELETE FROM city_table")
+    @Query("DELETE FROM nota_table")
     suspend fun deleteAll()
 
-    @Query("DELETE FROM city_table where city == :city")
-    suspend fun deleteByCity(city: String)
+   @Delete
+   fun deleteNota(nota: Nota?)
 
-    @Query("UPDATE city_table SET country=:country WHERE city == :city")
-    suspend fun updateCountryFromCity(city: String, country: String)
 }

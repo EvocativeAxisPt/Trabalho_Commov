@@ -10,15 +10,7 @@ class NotaRepository(private val notasDao: NotasDao) {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    val allCities: LiveData<List<Nota>> = notasDao.getAllCities()
-
-    fun getCitiesByCountry(country: String): LiveData<List<Nota>> {
-        return notasDao.getCitiesByCountry(country)
-    }
-
-    fun getCountryFromCity(city: String): LiveData<Nota> {
-        return notasDao.getCountryFromCity(city)
-    }
+    val allNotas: LiveData<List<Nota>> = notasDao.getAllCities()
 
     suspend fun insert(nota: Nota) {
         notasDao.insert(nota)
@@ -28,15 +20,12 @@ class NotaRepository(private val notasDao: NotasDao) {
         notasDao.deleteAll()
     }
 
-    suspend fun deleteByCity(city: String){
-        notasDao.deleteByCity(city)
+
+    suspend fun updateNota(nota: Nota) {
+        notasDao.updateNota(nota)
     }
 
-    suspend fun updateCity(nota: Nota) {
-        notasDao.updateCity(nota)
-    }
-
-    suspend fun updateCountryFromCity(city: String, country: String){
-        notasDao.updateCountryFromCity(city, country)
+    suspend fun deleteNota(nota: Nota) {
+        notasDao.deleteNota(nota)
     }
 }

@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 // Note: When you modify the database schema, you'll need to update the version number and define a migration strategy
 //For a sample, a destroy and re-create strategy can be sufficient. But, for a real app, you must implement a migration strategy.
 
-@Database(entities = arrayOf(Nota::class), version = 8, exportSchema = false)
+@Database(entities = arrayOf(Nota::class), version = 11, exportSchema = false)
 public abstract class NotaDB : RoomDatabase() {
 
-    abstract fun cityDao(): NotasDao
+    abstract fun NotasDao(): NotasDao
 
     private class WordDatabaseCallback(
         private val scope: CoroutineScope
@@ -28,33 +28,8 @@ public abstract class NotaDB : RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    var cityDao = database.cityDao()
-
-                    // Delete all content here.
-                   // cityDao.deleteAll()
-
-                    // Add sample cities.
-                    /*var city = Nota(
-                        1,
-                        "Viana do Castelo",
-                        "Portugal"
-                    )
-                    cityDao.insert(city)
-                    city =
-                        Nota(
-                            2,
-                            "Porto",
-                            "Portugal"
-                        )
-                    cityDao.insert(city)
-                    city =
-                        Nota(
-                            3,
-                            "Aveiro",
-                            "Portugal"
-                        )
-                    cityDao.insert(city)
-                    */
+                    var NotasDao = database.NotasDao()
+4
                 }
             }
         }
@@ -76,7 +51,7 @@ public abstract class NotaDB : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     NotaDB::class.java,
-                    "cities_database"
+                    "notas_database"
                 )
                 //estratégia de destruição
                 .fallbackToDestructiveMigration()

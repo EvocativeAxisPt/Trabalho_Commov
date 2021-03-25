@@ -10,7 +10,7 @@
         android:layout_above="@id/button_save"
         >
         <EditText
-            android:id="@+id/city"
+            android:id="@+id/titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
@@ -19,9 +19,9 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/country"
+            android:id="@+id/descicao"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:hint="@string/insertDescrição"
             android:inputType="textAutoComplete"

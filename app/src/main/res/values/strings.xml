@@ -15,4 +15,5 @@
     <string name="All_Notes">All Notes</string>
     <string name="inserttitulo">Titulo</string>
     <string name="insertDescrição">Description</string>
+    <string name="add_nota">Add nota</string>
 </resources>

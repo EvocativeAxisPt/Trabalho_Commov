@@ -17,12 +17,12 @@ class NotaViewModel(application: Application) : AndroidViewModel(application) {
     // - We can put an observer on the data (instead of polling for changes) and only update the
     //   the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
-    val allCities: LiveData<List<Nota>>
+    val allnotas: LiveData<List<Nota>>
 
     init {
-        val citiesDao = NotaDB.getDatabase(application, viewModelScope).cityDao()
-        repository = NotaRepository(citiesDao)
-        allCities = repository.allCities
+        val NotasDao = NotaDB.getDatabase(application, viewModelScope).NotasDao()
+        repository = NotaRepository(NotasDao)
+        allnotas = repository.allNotas
     }
 
     /**
@@ -37,24 +37,13 @@ class NotaViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteAll()
     }
 
-    // delete by city
-    fun deleteByCity(city: String) = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteByCity(city)
+
+    fun updateNota(nota: Nota) = viewModelScope.launch {
+        repository.updateNota(nota)
     }
 
-    fun getCitiesByCountry(country: String): LiveData<List<Nota>> {
-        return repository.getCitiesByCountry(country)
+    fun deleteNota(nota: Nota) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteNota(nota)
     }
 
-    fun getCountryFromCity(city: String): LiveData<Nota> {
-        return repository.getCountryFromCity(city)
-    }
-
-    fun updateCity(nota: Nota) = viewModelScope.launch {
-        repository.updateCity(nota)
-    }
-
-    fun updateCountryFromCity(city: String, country: String) = viewModelScope.launch {
-        repository.updateCountryFromCity(city, country)
-    }
 }
