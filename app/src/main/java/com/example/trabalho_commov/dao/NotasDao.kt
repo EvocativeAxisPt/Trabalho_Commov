@@ -8,7 +8,7 @@ import com.example.trabalho_commov.entities.Nota
 interface NotasDao {
 
     @Query("SELECT * from nota_table ORDER BY titulo ASC")
-    fun getAllCities(): LiveData<List<Nota>>
+    fun getAllNotas(): LiveData<List<Nota>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(nota: Nota)

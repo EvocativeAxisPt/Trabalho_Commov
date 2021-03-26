@@ -40,12 +40,12 @@
 
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/edit"
+          android:id="@+id/editbutton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:src="@drawable/ic_baseline_edit_12"
-          app:borderWidth="0dp"
-          app:backgroundTint="#00FFFFFF"
+          app:backgroundTint="#FFFFFF"
+          android:layout_marginRight="10dp"
           >
       </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
@@ -53,10 +53,12 @@
       <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:src="@drawable/ic_baseline_delete_12"
+          android:src="@drawable/ic_baseline_delete_24"
           android:id="@+id/deletebutton"
-          app:borderWidth="0dp"
-          app:backgroundTint="#00FFFFFF"
+          app:backgroundTint="#FFFFFF"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="10dp"
           >
 
       </com.google.android.material.floatingactionbutton.FloatingActionButton>

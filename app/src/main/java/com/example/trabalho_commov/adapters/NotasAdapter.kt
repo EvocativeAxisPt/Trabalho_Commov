@@ -2,7 +2,6 @@ package com.example.trabalho_commov.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trabalho_commov.entities.Nota
 import com.example.trabalho_commov.R
 import kotlinx.android.synthetic.main.recyclerview_item.view.*
+import java.nio.file.Files
 
 class NotasAdapter internal constructor(
     context: Context,
@@ -21,13 +21,16 @@ class NotasAdapter internal constructor(
 
     class NotaViewHolder(itemView: View,val listener: RowClickListener) : RecyclerView.ViewHolder(itemView) {
         val NotaItemView: TextView = itemView.findViewById(R.id.textView)
-        val deleteUserID = itemView.deletebutton
-
+        val deleteNotaID = itemView.deletebutton
+        val EditNotaID = itemView.editbutton
 
 
         fun bind(nota: Nota){
-            deleteUserID.setOnClickListener{
+            deleteNotaID.setOnClickListener{
                 listener.onDeleteNotaClickListener(nota)
+            }
+            EditNotaID.setOnClickListener{
+                listener.onItemClick(nota)
             }
         }
     }
@@ -41,7 +44,10 @@ class NotasAdapter internal constructor(
 
     override fun onBindViewHolder(holder: NotaViewHolder, position: Int) {
         val current = notas[position]
-        holder.NotaItemView.text = current.id.toString() + " - " + current.titulo + "\n" + current.descricao
+
+        //TODO CALL @STRING/TITLE e desc | precisa de api 30 ?
+       // val string: String = getString(R.string.Title)
+        holder.NotaItemView.text = "Title"  + " - " + current.titulo + "\n\nDescription" +  " - "  + current.descricao
 
         holder.bind(current);
 
@@ -57,11 +63,10 @@ class NotasAdapter internal constructor(
 
     interface RowClickListener{
         fun onDeleteNotaClickListener(nota: Nota)
-    }
-
-    interface onItemClickListener{
         fun onItemClick(nota: Nota)
     }
+
+
 
 
 }

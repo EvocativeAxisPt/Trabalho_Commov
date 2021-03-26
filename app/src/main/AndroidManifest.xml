@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddNota" />
+        <activity android:name=".EditNota" />
         <activity android:name=".MainActivity">
 
         </activity>

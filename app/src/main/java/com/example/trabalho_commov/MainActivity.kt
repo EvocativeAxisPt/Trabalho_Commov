@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(),NotasAdapter.RowClickListener {
 
     private lateinit var notaViewModel: NotaViewModel
     private val newWordActivityRequestCode = 1
+    private val INTENT_REQUEST_EDIT_NOTE = 2
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,29 @@ class MainActivity : AppCompatActivity(),NotasAdapter.RowClickListener {
                 notaViewModel.insert(nota)
             }
 
-        } else {
+        }
+
+        if (requestCode == INTENT_REQUEST_EDIT_NOTE && resultCode == RESULT_OK && data != null) {
+            val id = data.getIntExtra(EditNota.EXTRA_ID, -1)
+            if(id == -1) {
+                Toast.makeText(this, "Note can't be updated", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val title = data.getStringExtra(EditNota.EXTRA_REPLY_TITULO) ?: ""
+            val description = data.getStringExtra(EditNota.EXTRA_REPLY_DESCRICAO) ?: ""
+
+            val nota = Nota(
+                    id = id,
+                    titulo = title,
+                    descricao = description
+            )
+            notaViewModel.updateNota(nota)
+
+            Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show()
+            }
+
+        else {
             Toast.makeText(
                 applicationContext,
                 R.string.empty_not_saved,
@@ -119,6 +142,16 @@ class MainActivity : AppCompatActivity(),NotasAdapter.RowClickListener {
         notaViewModel.deleteNota(nota)
     }
 
+    override fun onItemClick(nota: Nota) {
+      //  Toast.makeText(this, nota.titulo, Toast.LENGTH_SHORT).show()
+        val intent = Intent(this@MainActivity, EditNota::class.java)
+        intent.putExtra(EditNota.EXTRA_ID, nota.id)
+        intent.putExtra(EditNota.EXTRA_REPLY_TITULO, nota.titulo)
+        intent.putExtra(EditNota.EXTRA_REPLY_DESCRICAO, nota.descricao)
+       startActivityForResult(intent, INTENT_REQUEST_EDIT_NOTE)
+
+
+    }
 
 
 }
