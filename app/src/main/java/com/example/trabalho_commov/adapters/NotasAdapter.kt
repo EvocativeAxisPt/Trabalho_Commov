@@ -1,6 +1,7 @@
 package com.example.trabalho_commov.adapters
 
 import android.content.Context
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,9 +46,10 @@ class NotasAdapter internal constructor(
     override fun onBindViewHolder(holder: NotaViewHolder, position: Int) {
         val current = notas[position]
 
-        //TODO CALL @STRING/TITLE e desc | precisa de api 30 ?
-       // val string: String = getString(R.string.Title)
-        holder.NotaItemView.text = "Title"  + " - " + current.titulo + "\n\nDescription" +  " - "  + current.descricao
+        val stringtitle: String = holder.itemView.context.getString(R.string.Title)
+        val stringdesc: String = holder.itemView.context.getString(R.string.Description)
+
+        holder.NotaItemView.text = stringtitle + " - " + current.titulo + "\n\n" + stringdesc +  " - "  + current.descricao
 
         holder.bind(current);
 
