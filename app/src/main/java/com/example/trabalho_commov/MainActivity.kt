@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity(),NotasAdapter.RowClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        //comentário teste para o gittttttttttttt
         // recycler view
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = NotasAdapter(this,this@MainActivity)
