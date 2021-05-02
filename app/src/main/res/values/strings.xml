@@ -19,4 +19,9 @@
     <string name="missingdata">Make sure you fill all required fields</string>
     <string name="passworderrada">Wrong Password</string>
     <string name="SIGNOUT">Signout</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="DescriptionSlash">"Description: "</string>
+    <string name="TitleSlash">"Title: "</string>
+    <string name="usererradp">The user does not exist</string>
+    <string name="credenciais">Login Failed : Incorrect credentials</string>
 </resources>

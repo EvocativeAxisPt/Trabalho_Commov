@@ -11,7 +11,7 @@ import com.example.trabalho_commov.api.Note
 
 class WebNotasAdapter(val notas: List<Note>): RecyclerView.Adapter<NotasViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotasViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerline, parent, false)
         return NotasViewHolder(view)
     }
 
@@ -26,7 +26,7 @@ class WebNotasAdapter(val notas: List<Note>): RecyclerView.Adapter<NotasViewHold
 
 class NotasViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
     private val titulo: TextView = itemView.findViewById(R.id.titulo)
-    private val descricao:TextView = itemView.findViewById(R.id.descicao)
+    private val descricao:TextView = itemView.findViewById(R.id.descricao)
 
     fun bind(nota: Note) {
         titulo.text = nota.titulo

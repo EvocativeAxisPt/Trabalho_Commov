@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/username"
+        android:hint="@string/username"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_alignParentTop="true"/>
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="@string/password"
+        android:hint="@string/password"
         android:layout_marginLeft="10dp"
         android:layout_alignBottom="@id/editTextTextPersonName"/>
 
@@ -108,14 +108,18 @@
 
 
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/barrier2"
-        android:layout_below="@+id/barrier1"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/barrier1"
+        android:layout_above="@id/barrier2"
+        tools:context=".MapsActivity" />
 
     <View
         android:id="@+id/barrier2"

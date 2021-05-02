@@ -14,16 +14,29 @@ import com.example.trabalho_commov.Logged_In_Activity
 import com.example.trabalho_commov.MainActivity
 import com.example.trabalho_commov.R
 import com.example.trabalho_commov.api.EndPoints
+import com.example.trabalho_commov.api.Note
 import com.example.trabalho_commov.api.ServiceBuilder
 import com.example.trabalho_commov.api.User
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main__menu.*
 import retrofit2.*
 
-class Main_Menu : AppCompatActivity() {
+class Main_Menu : AppCompatActivity(), OnMapReadyCallback {
+    private lateinit var mMap: GoogleMap
+    private lateinit var notas: List<Note>
     lateinit var preferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main__menu)
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
 
 
@@ -37,8 +50,41 @@ class Main_Menu : AppCompatActivity() {
         val button: Button = findViewById(R.id.button2)
         val buttonLogin: Button = findViewById(R.id.buttonLogin)
 
+        val request = ServiceBuilder.buildService(EndPoints::class.java)
+        val call = request.getNotas()
+        var position: LatLng
+
+        call.enqueue(object : Callback<List<Note>> {
+
+            override fun onResponse(call: Call<List<Note>>, response: Response<List<Note>>) {
+                if(response.isSuccessful){
+                    notas= response.body()!!
+                    for(nota in notas){
+                        position= LatLng(nota.lat.toString().toDouble(),nota.lng.toString().toDouble())
+                        mMap.addMarker(MarkerOptions().position(position).title((nota.titulo + " - " + nota.descricao)))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Note>>, t: Throwable) {
+                Toast.makeText(this@Main_Menu,"${t.message}", Toast.LENGTH_SHORT).show()
+            }
+
+
+
+
+        })
+
+
+
+
+
+
+
+
+
         button.setOnClickListener {
-            val intent = Intent(this, Logged_In_Activity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -79,6 +125,20 @@ class Main_Menu : AppCompatActivity() {
 
 
 
+
+
+
+
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        // Add a marker in Sydney and move the camera
+        val sydney = LatLng(-34.0, 151.0)
+        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
     fun Login(user: String, pass: String) {
 
         val request = ServiceBuilder.buildService(EndPoints::class.java)
@@ -91,15 +151,17 @@ class Main_Menu : AppCompatActivity() {
             override fun onResponse(call: Call<User>, response: Response<User>) {
 
                 if (response.isSuccessful){
-                    val c: User = response.body()!!
 
-                    if(c.password.equals(pass)) {
+
+                    val u: User = response.body()!!
+
+                    if(u.password.equals(pass)) {
 
                         val editor: SharedPreferences.Editor = preferences.edit()
 
                         editor.putString("USERNAME", user)
                         editor.putString("PASSWORD", pass)
-                        editor.putInt("ID", c.id_pessoa)
+                        editor.putInt("ID_PESSOA", u.id_pessoa)
                         editor.apply()
 
                         startActivity(intent)
@@ -108,6 +170,10 @@ class Main_Menu : AppCompatActivity() {
                     else{
                         Toast.makeText(this@Main_Menu, getResources().getString(R.string.passworderrada), Toast.LENGTH_SHORT).show()
                     }
+
+                }else{
+                   Toast.makeText(this@Main_Menu,getResources().getString(R.string.credenciais), Toast.LENGTH_SHORT).show()
+
                 }
             }
 

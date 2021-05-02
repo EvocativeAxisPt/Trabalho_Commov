@@ -11,5 +11,7 @@ data class Note(
         val id: Int,
         val titulo: String,
         val descricao: String,
-        val id_pessoa: Int
+        val id_pessoa: Int,
+        val lat: String,
+        var lng: String
 )
