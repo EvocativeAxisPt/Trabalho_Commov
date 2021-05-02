@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ipvc.estg.room.Main_Menu">
+
+    <LinearLayout
+        android:id="@+id/loginlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <Button
+            android:id="@+id/buttonSIGNOUT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:text="@string/SIGNOUT"
+            android:textColor="#3FEA0E"
+            app:backgroundTint="#FFFFFF" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/barrier1"
+        android:layout_alignBottom="@id/loginlayout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/buttonslayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/All_Notes"
+            android:layout_weight="1"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="#000000"
+            app:backgroundTint="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:text="@string/mynotes"
+            android:textColor="#000000"
+            app:backgroundTint="#FFFFFF" />
+
+    </LinearLayout>
+
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/barrier2"
+        android:layout_below="@+id/barrier1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <View
+        android:id="@+id/barrier2"
+        android:layout_above="@id/buttonslayout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"/>
+
+</RelativeLayout>

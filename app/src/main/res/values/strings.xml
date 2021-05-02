@@ -16,4 +16,7 @@
     <string name="inserttitulo">Titulo</string>
     <string name="insertDescrição">Description</string>
     <string name="add_nota">Add nota</string>
+    <string name="missingdata">Make sure you fill all required fields</string>
+    <string name="passworderrada">Wrong Password</string>
+    <string name="SIGNOUT">Signout</string>
 </resources>
