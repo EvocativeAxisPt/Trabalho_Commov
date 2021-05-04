@@ -3,15 +3,19 @@ package com.example.trabalho_commov
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.trabalho_commov.api.EndPoints
 import com.example.trabalho_commov.api.Note
 import com.example.trabalho_commov.api.ServiceBuilder
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -28,10 +32,14 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var notas: List<Note>
     lateinit var preferences: SharedPreferences
-
+    // add to implement last known location
+    private lateinit var lastLocation: Location
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     //added to implement location periodic updates
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
+    private lateinit var locAdd: LatLng
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +52,8 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         preferences = getSharedPreferences("SharedLogin", Context.MODE_PRIVATE);
         val myIntValue: Int = preferences.getInt("ID_PESSOA", -1)
 
-
+        // initialize fusedLocationClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 
         val buttonall: Button = findViewById(R.id.button)
@@ -55,6 +64,17 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         val request = ServiceBuilder.buildService(EndPoints::class.java)
         val call = request.getNotas()
         var position: LatLng
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -98,6 +118,16 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         })
 
 
+
+
+
+
+
+
+
+
+
+
         button.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -118,6 +148,31 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
+        //added to implement location periodic updates
+        //falta add verificação no ismylocationtrue
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                lastLocation = p0.lastLocation
+                var loc = LatLng(lastLocation.latitude, lastLocation.longitude)
+                locAdd = loc
+                mMap.isMyLocationEnabled = true
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f))
+
+                // preenche as coordenadas
+                Log.d("Coords",loc.latitude.toString() )
+                Log.d("Coords",loc.longitude.toString() )
+                // reverse geocoding
+                val address = getAddress(lastLocation.latitude, lastLocation.longitude)
+
+
+                Log.d("** Hugo", "new location received - " + loc.latitude + " -" + loc.longitude)
+            }
+        }
+
+        // request creation
+        createLocationRequest()
+
     }
 
     override fun onStart() {
@@ -131,6 +186,13 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+
+        startLocationUpdates()
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -140,6 +202,36 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
+
+
+
+    //Alterado
+    companion object {
+        // add to implement last known location
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        //added to implement location periodic updates
+        private const val REQUEST_CHECK_SETTINGS = 2
+    }
+
+    //added to implement location periodic updates
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */)
+    }
+
+    private fun getAddress(lat: Double, lng: Double): String {
+        val geocoder = Geocoder(this)
+        val list = geocoder.getFromLocation(lat, lng, 1)
+        return list[0].getAddressLine(0)
+    }
+
 
 
     private fun createLocationRequest() {
