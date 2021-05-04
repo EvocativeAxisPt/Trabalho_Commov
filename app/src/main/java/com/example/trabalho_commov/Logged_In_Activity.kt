@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.trabalho_commov.api.EndPoints
 import com.example.trabalho_commov.api.Note
 import com.example.trabalho_commov.api.ServiceBuilder
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,6 +28,11 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var notas: List<Note>
     lateinit var preferences: SharedPreferences
+
+    //added to implement location periodic updates
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged__in_)
@@ -37,6 +44,9 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         preferences = getSharedPreferences("SharedLogin", Context.MODE_PRIVATE);
         val myIntValue: Int = preferences.getInt("ID_PESSOA", -1)
 
+
+
+
         val buttonall: Button = findViewById(R.id.button)
         val button: Button = findViewById(R.id.button2)
         val buttonOut: Button = findViewById(R.id.buttonSIGNOUT)
@@ -46,28 +56,43 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         val call = request.getNotas()
         var position: LatLng
 
-        call.enqueue(object : Callback<List<Note>> {
 
+
+
+        call.enqueue(object : Callback<List<Note>> {
             override fun onResponse(call: Call<List<Note>>, response: Response<List<Note>>) {
-             if(response.isSuccessful){
-                 notas= response.body()!!
-                 for(nota in notas){
-                     if(nota.id_pessoa==(myIntValue)){
-                         position= LatLng(nota.lat.toString().toDouble(),nota.lng.toString().toDouble())
-                         mMap.addMarker(MarkerOptions().position(position).title((nota.titulo + " - " + nota.descricao)).icon(
-                             BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                     }else{
-                     position= LatLng(nota.lat.toString().toDouble(),nota.lng.toString().toDouble())
-                     mMap.addMarker(MarkerOptions().position(position).title((nota.titulo + " - " + nota.descricao )))}
-                 }
-             }
+                if (response.isSuccessful) {
+                    notas = response.body()!!
+                    for (nota in notas) {
+                        if (nota.id_pessoa == (myIntValue)) {
+                            position = LatLng(
+                                nota.lat.toString().toDouble(),
+                                nota.lng.toString().toDouble()
+                            )
+                            mMap.addMarker(
+                                MarkerOptions().position(position)
+                                    .title((nota.titulo + " - " + nota.descricao)).icon(
+                                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+                                )
+                            )
+                        } else {
+                            position = LatLng(
+                                nota.lat.toString().toDouble(),
+                                nota.lng.toString().toDouble()
+                            )
+                            mMap.addMarker(
+                                MarkerOptions().position(position)
+                                    .title((nota.titulo + " - " + nota.descricao))
+                            )
+                        }
+                    }
+                }
             }
 
             override fun onFailure(call: Call<List<Note>>, t: Throwable) {
-                Toast.makeText(this@Logged_In_Activity,"Credencias Incorretos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Logged_In_Activity, "Credencias Incorretos", Toast.LENGTH_SHORT)
+                    .show()
             }
-
-
 
 
         })
@@ -92,7 +117,20 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         }
 
 
+
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        val userPref = preferences.getString("USERNAME", null)
+        if(userPref.isNullOrBlank()){
+            val intent = Intent(this, Main_Menu::class.java)
+            startActivity(intent)
+        }
+
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -101,5 +139,13 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest()
+        // interval specifies the rate at which your app will like to receive updates.
+        locationRequest.interval = 10000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 }
