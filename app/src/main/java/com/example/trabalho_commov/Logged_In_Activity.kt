@@ -157,7 +157,10 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
                 var loc = LatLng(lastLocation.latitude, lastLocation.longitude)
                 locAdd = loc
                 mMap.isMyLocationEnabled = true
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f))
+
+
+                
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f))
 
                 // preenche as coordenadas
                 Log.d("Coords",loc.latitude.toString() )
@@ -191,7 +194,16 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
 
 
         startLocationUpdates()
+        Log.d("Valor:", "Resume")
     }
+
+    //Parar de receber Coordenadas ao pausar
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+        Log.d("Valor:", "Pause")
+    }
+
 
 
     override fun onMapReady(googleMap: GoogleMap) {
