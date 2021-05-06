@@ -84,6 +84,7 @@ class NotaDesc : AppCompatActivity() {
                 deletenota(IdMarker)
             }
             else{
+                //arranjar maneira de esconder em vez de disparar toasts se sobrar tempo -- TODO
                 Toast.makeText(this@NotaDesc, R.string.cantdelete, Toast.LENGTH_SHORT).show()
             }
         }

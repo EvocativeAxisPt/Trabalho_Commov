@@ -1,5 +1,6 @@
 package com.example.trabalho_commov
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,7 +18,6 @@ import com.example.trabalho_commov.api.EndPoints
 import com.example.trabalho_commov.api.Note
 import com.example.trabalho_commov.api.ServiceBuilder
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -63,76 +63,9 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         val button: Button = findViewById(R.id.button2)
         val buttonOut: Button = findViewById(R.id.buttonSIGNOUT)
 
-
-
         val request = ServiceBuilder.buildService(EndPoints::class.java)
         val call = request.getNotas()
         var position: LatLng
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        call.enqueue(object : Callback<List<Note>> {
-            override fun onResponse(call: Call<List<Note>>, response: Response<List<Note>>) {
-                if (response.isSuccessful) {
-                    notas = response.body()!!
-                    for (nota in notas) {
-                        if (nota.id_pessoa == (myIntValue)) {
-                            position = LatLng(
-                                nota.lat.toString().toDouble(),
-                                nota.lng.toString().toDouble()
-                            )
-                         val marker =   mMap.addMarker(
-                                MarkerOptions().position(position)
-                                    .title((nota.titulo + " - " + nota.descricao)).icon(
-                                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
-
-                                )
-                            )
-                            marker.tag = "${nota.id}-true"
-                        } else {
-                            position = LatLng(
-                                nota.lat.toString().toDouble(),
-                                nota.lng.toString().toDouble()
-                            )
-                          val marker =  mMap.addMarker(
-                                MarkerOptions().position(position)
-                                    .title((nota.titulo + " - " + nota.descricao))
-                            )
-                            marker.tag = "${nota.id}-true"
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<List<Note>>, t: Throwable) {
-                Toast.makeText(this@Logged_In_Activity, "Credencias Incorretos", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-
-        })
-
-
-
-
-
-
-
-
-
-
 
 
         button.setOnClickListener {
@@ -174,6 +107,27 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
                 lastLocation = p0.lastLocation
                 var loc = LatLng(lastLocation.latitude, lastLocation.longitude)
                 locAdd = loc
+
+
+                if (ActivityCompat.checkSelfPermission(
+                        this@Logged_In_Activity,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this@Logged_In_Activity,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return
+                }
+
+
                 mMap.isMyLocationEnabled = true
 
 
@@ -194,6 +148,55 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         // request creation
         createLocationRequest()
 
+
+
+        carregar_pontos(null,null,null);
+
+
+
+        val buttonfilter: Button = findViewById(R.id.Filter)
+        buttonfilter.setOnClickListener {
+            //Limpar pontos
+            mMap.clear();
+            //Carrgar um raio? de 50000
+            carregar_pontos(50000,locAdd.latitude,locAdd.longitude);
+        }
+        val buttonAcidente: Button = findViewById(R.id.FilterAcidente)
+        buttonAcidente.setOnClickListener {
+            //Limpar pontos
+            mMap.clear();
+
+            val mystring = resources.getString(R.string.Acidente)
+            carregarFiltro(mystring)
+        }
+        val buttonObras: Button = findViewById(R.id.Obras)
+        buttonObras.setOnClickListener {
+            //Limpar pontos
+
+            mMap.clear();
+            val mystring = resources.getString(R.string.Obras)
+            carregarFiltro(mystring)
+        }
+        val buttonEstrada: Button = findViewById(R.id.Estrada)
+        buttonEstrada.setOnClickListener {
+            //Limpar pontos
+            mMap.clear();
+            val mystring = resources.getString(R.string.Estrada)
+            carregarFiltro(mystring)
+        }
+        val buttonPerigo: Button = findViewById(R.id.Petigo)
+        buttonPerigo.setOnClickListener {
+            //Limpar pontos
+            mMap.clear();
+            val mystring = resources.getString(R.string.Perigo)
+            carregarFiltro(mystring)
+        }
+
+
+
+
+
+
     }
 
     override fun onStart() {
@@ -209,8 +212,6 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-
-
         startLocationUpdates()
         Log.d("Valor:", "Resume")
     }
@@ -233,7 +234,6 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
             override fun onInfoWindowClick(p0: Marker) {
 
                 val intent = Intent(this@Logged_In_Activity, NotaDesc::class.java)
-
                 //Buscar valor do ID do marker
                 val id: Int
                 val split = TextUtils.split( "${p0.tag}", "-")
@@ -248,17 +248,10 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
                 finish()
             }
         })
-
-
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
 
 
-    //Alterado
     companion object {
         // add to implement last known location
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -285,7 +278,12 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         return list[0].getAddressLine(0)
     }
 
-
+    fun calculateDistance(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Float {
+        val results = FloatArray(1)
+        Location.distanceBetween(lat1, lng1, lat2, lng2, results)
+        // distance in meter
+        return results[0]
+    }
 
     private fun createLocationRequest() {
         locationRequest = LocationRequest()
@@ -293,4 +291,178 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         locationRequest.interval = 10000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
+
+
+    fun carregar_pontos(distance: Int?,lastlat: Double?,lastlng: Double?){
+        preferences = getSharedPreferences("SharedLogin", Context.MODE_PRIVATE);
+        val myIntValue: Int = preferences.getInt("ID_PESSOA", -1)
+
+        val request = ServiceBuilder.buildService(EndPoints::class.java)
+        val call = request.getNotas()
+        var position: LatLng
+
+        call.enqueue(object : Callback<List<Note>> {
+            override fun onResponse(call: Call<List<Note>>, response: Response<List<Note>>) {
+                if (response.isSuccessful) {
+                    notas = response.body()!!
+                    for (nota in notas) {
+                        if (nota.id_pessoa == (myIntValue)) {
+                            position = LatLng(
+                                nota.lat.toString().toDouble(),
+                                nota.lng.toString().toDouble()
+                            )
+                        //val distanceOf = 100
+                            if (distance != null && lastlat != null && lastlng != null) {
+                                val distanceOf = calculateDistance(lastlat, lastlng,nota.lat.toDouble(),nota.lng.toDouble())
+                                if (distanceOf < distance) {
+                                    //icon dentro da distancia
+                                    val marker = mMap.addMarker(
+                                        MarkerOptions().position(position)
+                                            .title((nota.titulo + " - " + nota.descricao)).icon(
+                                                BitmapDescriptorFactory.defaultMarker(
+                                                    BitmapDescriptorFactory.HUE_YELLOW
+                                                )
+
+                                            )
+                                    )
+                                    marker.tag = "${nota.id}-true"
+                                }
+                            }else{
+                                val marker = mMap.addMarker(
+                                    MarkerOptions().position(position)
+                                        .title((nota.titulo + " - " + nota.descricao)).icon(
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_AZURE
+                                            )
+
+
+                                        )
+
+                                )
+                                marker.tag = "${nota.id}-true"
+
+                            }
+
+
+
+                        }
+                        //Não pertence ao utilizador
+                        else {
+                            position = LatLng(
+                                nota.lat.toString().toDouble(),
+                                nota.lng.toString().toDouble()
+                            )
+
+                            if (distance != null && lastlat != null && lastlng != null) {
+                                val distanceOf = calculateDistance(lastlat, lastlng,nota.lat.toDouble(),nota.lng.toDouble())
+                                if (distanceOf < distance) {
+
+                                    //Icons de outros quando existe distancia
+                                    val marker = mMap.addMarker(
+                                        MarkerOptions().position(position)
+                                            .title((nota.titulo + " - " + nota.descricao)).icon(
+                                                BitmapDescriptorFactory.defaultMarker(
+                                                    BitmapDescriptorFactory.HUE_GREEN
+                                                )
+                                            )
+                                    )
+                                    marker.tag = "${nota.id}-true"
+
+
+                                }
+                            }else{
+                                //Icones de outros caso nao exista distancia
+                                val marker = mMap.addMarker(
+                                    MarkerOptions().position(position)
+                                        .title((nota.titulo + " - " + nota.descricao))
+                                )
+                                marker.tag = "${nota.id}-true"
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Note>>, t: Throwable) {
+                Toast.makeText(this@Logged_In_Activity, "Error", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+
+        })
+    }
+
+
+
+    fun carregarFiltro(tipo: String){
+        preferences = getSharedPreferences("SharedLogin", Context.MODE_PRIVATE);
+        val myIntValue: Int = preferences.getInt("ID_PESSOA", -1)
+
+        val request = ServiceBuilder.buildService(EndPoints::class.java)
+        val call = request.getNotas()
+        var position: LatLng
+
+        call.enqueue(object : Callback<List<Note>> {
+            override fun onResponse(call: Call<List<Note>>, response: Response<List<Note>>) {
+                if (response.isSuccessful) {
+                    notas = response.body()!!
+                    for (nota in notas) {
+                        if (nota.id_pessoa == (myIntValue)) {
+                            position = LatLng(
+                                nota.lat.toString().toDouble(),
+                                nota.lng.toString().toDouble()
+                            )
+
+                            if(nota.tipo==(tipo)) {
+                                //icon dentro da distancia
+                                val marker = mMap.addMarker(
+                                    MarkerOptions().position(position)
+                                        .title((nota.titulo + " - " + nota.descricao)).icon(
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_YELLOW
+                                            )
+
+                                        )
+                                )
+                                marker.tag = "${nota.id}-true"
+                            }
+
+
+
+                        }
+                        //Não pertence ao utilizador
+                        else {
+                            position = LatLng(
+                                nota.lat.toString().toDouble(),
+                                nota.lng.toString().toDouble()
+                            )
+
+
+                            if(nota.tipo==(tipo)) {
+                                //Icons de outros quando existe distancia
+                                val marker = mMap.addMarker(
+                                    MarkerOptions().position(position)
+                                        .title((nota.titulo + " - " + nota.descricao)).icon(
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_GREEN
+                                            )
+                                        )
+                                )
+                                marker.tag = "${nota.id}-true"
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Note>>, t: Throwable) {
+                Toast.makeText(this@Logged_In_Activity, "Error", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+
+        })
+    }
+
 }

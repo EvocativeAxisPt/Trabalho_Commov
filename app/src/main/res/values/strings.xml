@@ -4,7 +4,7 @@
     <string name="Title">Title</string>
     <string name="Insert_Item">Insert Item</string>
     <string name="Remove_Item">Remove Item</string>
-    <string name="add_city">Adicionar</string>
+    <string name="add_city">Add</string>
     <string name="insertcity">Insert City</string>
     <string name="insertcountry">Insert Country</string>
     <string name="empty_not_saved">NOT SAVED</string>
@@ -43,6 +43,10 @@
     <string name="cantedit">You do not have permission to edit this note</string>
     <string name="alterado">Note altered successfuly</string>
     <string name="erroEditar">There was an error while editing the note</string>
+    <string name="Filter">Filter</string>
+    <string name="Filtersize">Filter distance</string>
+    <string name="Distancia">Distance</string>
+    <string name="Filters">Filters</string>
 
     <string-array name="planets_array">
         <item>@string/Acidente</item>

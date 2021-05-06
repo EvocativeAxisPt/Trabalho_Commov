@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ipvc.estg.room.Main_Menu">
+
+
+
+
+
+        <Button
+            android:id="@+id/buttonSIGNOUT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:text="@string/SIGNOUT"
+            android:textColor="#3FEA0E"
+            app:backgroundTint="#FFFFFF" />
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/buttonslayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/All_Notes"
+            android:layout_weight="1"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="#000000"
+            app:backgroundTint="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:text="@string/mynotes"
+            android:textColor="#000000"
+            app:backgroundTint="#FFFFFF" />
+
+    </LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@id/barrier2"
+        tools:context=".MapsActivity" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Filters">
+
+        </TextView>
+        <Button
+            android:id="@+id/Filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barrier1"
+            android:minHeight="0dp"
+            android:text="@string/Distancia"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:backgroundTint="#FFFFFF"
+
+            />
+
+        <Button
+            android:id="@+id/FilterAcidente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Filter"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="@string/Acidente"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:backgroundTint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/Obras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/FilterAcidente"
+            android:minHeight="0dp"
+            android:text="@string/Obras"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:backgroundTint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/Estrada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Obras"
+            android:background="#FFFFFF"
+            android:minHeight="0dp"
+            android:text="@string/Estrada"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:backgroundTint="#FFFFFF" />
+
+
+        <Button
+            android:id="@+id/Petigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Estrada"
+            android:minHeight="0dp"
+            android:text="@string/Perigo"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:backgroundTint="#FFFFFF" />
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_above="@id/barrier2"
+       android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="30dp"
+        android:contentDescription="@string/add_nota"
+        android:src="@drawable/ic_baseline_add_24"/>
+
+
+    <View
+        android:id="@+id/barrier2"
+        android:layout_above="@id/buttonslayout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"/>
+
+
+
+
+
+</RelativeLayout>
