@@ -13,4 +13,15 @@ interface EndPoints {
 
     @GET("notasdetalhes")
     fun getNotas(): Call<List<Note>>
+
+    //Inserir Ponto
+    @FormUrlEncoded
+    @POST("nota/post")
+    fun inserirPonto(@Field("titulo") titulo: String?,
+                     @Field("descricao") descricao: String?,
+                     @Field("id_pessoa") id_pessoa: Int,
+                     @Field("lat") lat: String?,
+                     @Field("lng") lng: String?,
+                     @Field("tipo") tipo: String?
+                     ): Call<Note>
 }

@@ -13,5 +13,6 @@ data class Note(
         val descricao: String,
         val id_pessoa: Int,
         val lat: String,
-        var lng: String
+        var lng: String,
+        var tipo: String
 )

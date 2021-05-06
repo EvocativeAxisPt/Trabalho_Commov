@@ -23,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ipvc.estg.room.Main_Menu
 import retrofit2.Call
 import retrofit2.Callback
@@ -59,6 +60,7 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
         val buttonall: Button = findViewById(R.id.button)
         val button: Button = findViewById(R.id.button2)
         val buttonOut: Button = findViewById(R.id.buttonSIGNOUT)
+
 
 
         val request = ServiceBuilder.buildService(EndPoints::class.java)
@@ -145,6 +147,17 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, Main_Menu::class.java)
             startActivity(intent)
         }
+
+
+        //Fab
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            val intent = Intent(this, AddPonto::class.java)
+            intent.putExtra("LocLat", locAdd.latitude)
+            intent.putExtra("LocLon", locAdd.longitude)
+            startActivity(intent)
+        }
+
 
 
 

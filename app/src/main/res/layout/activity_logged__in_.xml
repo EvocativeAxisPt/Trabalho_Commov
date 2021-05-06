@@ -85,6 +85,16 @@
         android:layout_above="@id/barrier2"
         tools:context=".MapsActivity" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_above="@id/barrier2"
+       android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:contentDescription="@string/add_nota"
+        android:src="@drawable/ic_baseline_add_24"/>
+
     <View
         android:id="@+id/barrier2"
         android:layout_above="@id/buttonslayout"
