@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ipvc.estg.room.Main_Menu
@@ -91,21 +93,24 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
                                 nota.lat.toString().toDouble(),
                                 nota.lng.toString().toDouble()
                             )
-                            mMap.addMarker(
+                         val marker =   mMap.addMarker(
                                 MarkerOptions().position(position)
                                     .title((nota.titulo + " - " + nota.descricao)).icon(
                                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+
                                 )
                             )
+                            marker.tag = "${nota.id}-true"
                         } else {
                             position = LatLng(
                                 nota.lat.toString().toDouble(),
                                 nota.lng.toString().toDouble()
                             )
-                            mMap.addMarker(
+                          val marker =  mMap.addMarker(
                                 MarkerOptions().position(position)
                                     .title((nota.titulo + " - " + nota.descricao))
                             )
+                            marker.tag = "${nota.id}-true"
                         }
                     }
                 }
@@ -221,6 +226,29 @@ class Logged_In_Activity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+
+
+        mMap.setOnInfoWindowClickListener( object: GoogleMap.OnInfoWindowClickListener {
+            override fun onInfoWindowClick(p0: Marker) {
+
+                val intent = Intent(this@Logged_In_Activity, NotaDesc::class.java)
+
+                //Buscar valor do ID do marker
+                val id: Int
+                val split = TextUtils.split( "${p0.tag}", "-")
+
+                //Valor do ID
+                id = split[0].toInt()
+                intent.putExtra("idDoMarker",id)
+
+                Log.d("VALOR", "${p0.tag}")
+
+                startActivity(intent)
+                finish()
+            }
+        })
+
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)

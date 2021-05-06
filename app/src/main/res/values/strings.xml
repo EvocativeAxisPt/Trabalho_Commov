@@ -33,6 +33,16 @@
     <string name="Preencher">Please fill out all the forms</string>
     <string name="inserido">New note successfully inserted</string>
     <string name="erroinsert">Error: Insertion failed</string>
+    <string name="inserttipo">Tipe</string>
+    <string name="delete">Delete Note</string>
+    <string name="editnote">Edit Note</string>
+    <string name="retur">Return</string>
+    <string name="deletenote">Note deleted successfully</string>
+    <string name="exists">Note does not exist</string>
+    <string name="cantdelete">You are not allowed to delete this note</string>
+    <string name="cantedit">You do not have permission to edit this note</string>
+    <string name="alterado">Note altered successfuly</string>
+    <string name="erroEditar">There was an error while editing the note</string>
 
     <string-array name="planets_array">
         <item>@string/Acidente</item>

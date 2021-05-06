@@ -24,4 +24,23 @@ interface EndPoints {
                      @Field("lng") lng: String?,
                      @Field("tipo") tipo: String?
                      ): Call<Note>
+
+
+    //Vai buscar uma nota pelo id
+    @GET("nota/{id}")
+    fun getNota(@Path("id") id: Int?): Call<Note>
+
+
+    //Delete Ponto
+    @DELETE("notadelete/{id}")
+    fun deletenota(@Path("id") id: Int?): Call<Note>
+
+
+    //Editar Ponto
+    @FormUrlEncoded
+    @PUT("notaput/{id}")
+    fun editPonto(@Path("id") id: Int?,
+                  @Field("titulo") titulo: String?,
+                  @Field("descricao") descricao: String?,
+                  @Field("tipo") tipo: String?): Call<Note>
 }
